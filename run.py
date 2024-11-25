@@ -48,7 +48,6 @@ def main():
     argp.add_argument('--max_eval_samples', type=int, default=None,
                       help='Limit the number of examples to evaluate on.')
 
-    argp.save_total_limit = 10 # Save up to 10 checkpoints
     # argp.load_best_model_at_end = True # Load the best model found during training at the end of training
     
 
@@ -160,6 +159,11 @@ def main():
         return compute_metrics(eval_preds)
 
     # Initialize the Trainer object with the specified arguments and the model and dataset we loaded above
+
+    training_args.save_total_limit = 5 # Save up to 10 checkpoints
+    training_args.save_steps = 2500 # Save a checkpoint every 1000 steps
+    # training_args.load_best_model_at_end = True # Load the best model found during training at the end of training
+
     trainer = trainer_class(
         model=model,
         args=training_args,
@@ -222,7 +226,9 @@ if __name__ == "__main__":
 python3 run.py --do_train --task nli --dataset snli --output_dir ./trained_model/
 
 
-python3 run.py --do_train --task nli --dataset snli --output_dir ./trained_model/ --max_train_samples 50000 --max_eval_samples 1000
+python3 run.py --do_train --task nli --dataset snli --output_dir ./trained_model/ --max_train_samples 100000 
+
+# --max_eval_samples 1000
 
 python3 run.py --do_eval --task nli --dataset snli --model ./trained_model/ --output_dir ./eval_output/
 
