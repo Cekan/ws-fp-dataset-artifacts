@@ -2,3 +2,4 @@
 output/
 **/*checkpoint*/
 .venv/
+*.safetensors
